@@ -1,0 +1,25 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}FoodieHub{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'menu/style.css' %}">
+</head>
+<body>
+<header class="topbar"><div class="nav container">
+<a class="logo" href="{% url 'home' %}"><span class="logo-mark">f</span> foodie<span>hub</span></a>
+<nav>
+<a href="{% url 'home' %}">Explore</a>
+{% if user.is_authenticated %}
+<a href="{% url 'orders' %}">My orders</a><a href="{% url 'cart' %}" class="cart-link">Basket <span class="cart-dot">●</span></a>
+{% if user.is_staff %}<a href="{% url 'dashboard' %}">Dashboard</a>{% endif %}
+<form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}<button class="nav-button">Log out</button></form>
+{% else %}<a href="{% url 'login' %}">Log in</a><a class="nav-cta" href="{% url 'signup' %}">Join us</a>{% endif %}
+</nav></div></header>
+{% if messages %}<div class="container messages">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+<main>{% block content %}{% endblock %}</main>
+<footer><div class="container footer-inner"><a class="logo" href="{% url 'home' %}">foodie<span>hub</span></a><p>Good food. Good mood. Made fresh, just for you.</p><small>© 2026 FoodieHub · Full Stack Development Student Project</small></div></footer>
+</body></html>

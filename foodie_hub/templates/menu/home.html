@@ -1,0 +1,21 @@
+{% extends "menu/base.html" %}
+{% block title %}FoodieHub | Fresh food, happy days{% endblock %}
+{% block content %}
+<section class="hero"><div class="hero-inner container">
+<div class="hero-copy"><div class="eyebrow"><span></span> FRESHLY MADE, HAPPILY DELIVERED</div>
+<h1>Good food.<br><em>Great mood.</em></h1>
+<p>From your favourite comfort food to fresh feel-good bowls — find something delicious today.</p>
+<div class="hero-actions"><a class="btn btn-primary" href="#menu">Explore the menu <span>↗</span></a><span class="delivery-note">✦ Fresh picks, every day</span></div>
+<div class="hero-stats"><div><strong>{{ food_count }}</strong><small>Menu favourites</small></div><div><strong>25<span> min</span></strong><small>Average prep time</small></div><div><strong>4.9<span>/5</span></strong><small>Foodie rating</small></div></div>
+</div><div class="hero-visual"><div class="hero-photo"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1100&q=90" alt="Colourful fresh meal bowl"></div><div class="floating-tag">♥ <span>Made with<br>freshness</span></div><div class="hero-orbit"></div></div>
+</div></section>
+<section class="menu-section container" id="menu">
+<div class="section-heading"><div><div class="eyebrow">THE GOOD STUFF</div><h2>What are you <em>craving?</em></h2><p>Made fresh. Served with a little extra love.</p></div>
+<form class="search" method="get"><input name="q" value="{{ query }}" placeholder="Search delicious food…" aria-label="Search food"><button aria-label="Search">⌕</button></form></div>
+<div class="category-row"><a class="chip {% if not active_category %}active{% endif %}" href="{% url 'home' %}">All dishes</a>{% for category in categories %}<a class="chip {% if active_category == category.slug %}active{% endif %}" href="?category={{ category.slug }}">{{ category.name }}</a>{% endfor %}</div>
+<div class="food-grid">
+{% for food in foods %}<article class="food-card"><div class="food-image"><img src="{{ food.image_url }}" alt="{{ food.name }}" loading="lazy"><span class="veg-tag">{% if food.is_vegetarian %}● Veg{% else %}● Non-veg{% endif %}</span><span class="time-tag">◷ {{ food.prep_time }} min</span></div><div class="food-info"><div class="food-category">{{ food.category.name }}</div><h3>{{ food.name }}</h3><p>{{ food.description }}</p><div class="food-bottom"><strong>₹{{ food.price }}</strong>{% if user.is_authenticated %}<form method="post" action="{% url 'add_to_cart' food.id %}">{% csrf_token %}<button class="add-btn" aria-label="Add {{ food.name }} to basket">+</button></form>{% else %}<a class="add-btn" href="{% url 'login' %}">+</a>{% endif %}</div></div></article>
+{% empty %}<div class="empty"><h3>No dishes found</h3><p>Try another search or category.</p><a class="btn btn-primary" href="{% url 'home' %}">See all dishes</a></div>{% endfor %}
+</div></section>
+<section class="banner container"><div><div class="eyebrow">A LITTLE SOMETHING FOR YOU</div><h2>Your next favourite<br><em>is one click away.</em></h2><p>Choose your craving and let us handle the delicious part.</p></div><a href="#menu" class="btn btn-light">Order something good ↗</a></section>
+{% endblock %}

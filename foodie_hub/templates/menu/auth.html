@@ -1,0 +1,7 @@
+{% extends "menu/base.html" %}{% block title %}{{ heading }} | FoodieHub{% endblock %}
+{% block content %}<section class="auth-wrap container"><div class="auth-art"><div class="eyebrow">WELCOME TO THE TABLE</div><h1>Good things<br>start <em>here.</em></h1><p>Your favourite flavours are waiting.</p><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=85" alt="Fresh food spread"></div>
+<div class="auth-card"><h2>{{ heading }}</h2><p class="subtle">{% if signup %}Sign up to save your favourites and place orders.{% else %}Log in to continue your delicious journey.{% endif %}</p>
+<form method="post">{% csrf_token %}
+{% if signup %}{{ form.as_p }}{% else %}<label for="username">Username</label><input id="username" name="username" required><label for="password">Password</label><input id="password" type="password" name="password" required>{% endif %}
+<button class="btn btn-primary full" type="submit">{% if signup %}Create account{% else %}Log in{% endif %} ↗</button></form>
+<p class="switch">{% if signup %}Already have an account? <a href="{% url 'login' %}">Log in</a>{% else %}New to FoodieHub? <a href="{% url 'signup' %}">Create an account</a>{% endif %}</p></div></section>{% endblock %}
